@@ -94,6 +94,36 @@ namespace :performance_seed do
     end
   end
 
+  desc "Seed maximum performance test dataset (1 account, 200k inventories, 1M purchases/deliveries)"
+  task max: :environment do
+    puts "=== 最大想定パフォーマンステストデータセット投入開始 ==="
+    puts ""
+    puts "【データ規模】"
+    puts "  アカウント数: 1"
+    puts "  在庫数: 200,000"
+    puts "  入庫伝票: 1,000,000"
+    puts "  出庫伝票: 1,000,000"
+    puts "  1在庫あたり最大明細数: 1,000"
+    puts ""
+    puts "【推定データサイズ】"
+    puts "  合計レコード数: 約5,000,000-6,000,000"
+    puts "  ディスク使用量: 3-5GB"
+    puts ""
+    puts "【データ投入戦略】"
+    puts "  - 1,000在庫: 500-1,000明細（高負荷検証用）"
+    puts "  - 残り199,000在庫: 1-5明細（通常データ）"
+    puts ""
+    print "続行しますか？ (yes/no): "
+    confirmation = STDIN.gets.chomp
+
+    if confirmation.downcase == "yes"
+      require_relative "../../app/services/max_performance_dataset_seeder"
+      MaxPerformanceDatasetSeeder.new.call
+    else
+      puts "キャンセルしました。"
+    end
+  end
+
   desc "Show dataset information"
   task info: :environment do
     puts "=== 現在のデータ統計 ==="
@@ -129,6 +159,7 @@ namespace :performance_seed do
     puts "【利用可能なタスク】"
     puts "  rails performance_seed:test       # テスト用データセット投入 (18アカウント)"
     puts "  rails performance_seed:realistic  # 本番規模データセット投入 (1000アカウント)"
+    puts "  rails performance_seed:max        # 最大想定データセット投入 (1アカウント、200k在庫)"
     puts "  rails performance_seed:clear      # 全データ削除"
     puts "  rails performance_seed:info       # データ統計表示"
   end
