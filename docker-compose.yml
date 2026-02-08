@@ -1,4 +1,16 @@
 services:
+  db:
+    image: mysql:8.0
+    platform: linux/amd64
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: zaico_development
+    command: --default-authentication-plugin=mysql_native_password
+
   web:
     build:
       context: .
@@ -9,8 +21,14 @@ services:
       - bundle:/usr/local/bundle
     environment:
       RAILS_ENV: development
+      DATABASE_HOST: db
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
+    depends_on:
+      - db
     tty: true
     stdin_open: true
 
 volumes:
   bundle:
+  mysql_data:

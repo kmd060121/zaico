@@ -6,7 +6,7 @@ FROM docker.io/library/ruby:${RUBY_VERSION}-slim
 
 WORKDIR /rails
 
-# Install minimal packages for Rails + SQLite development
+# Install minimal packages for Rails + MySQL development
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
       build-essential \
@@ -14,9 +14,8 @@ RUN apt-get update -qq && \
       git \
       libyaml-dev \
       pkg-config \
-      libsqlite3-dev \
+      default-libmysqlclient-dev \
       libvips \
-      sqlite3 \
       tzdata && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 

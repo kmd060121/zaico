@@ -1,9 +1,7 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+PerformanceDatasetSeeder.new(
+  accounts: ENV.fetch("ACCOUNTS", PerformanceDatasetSeeder::DEFAULTS[:accounts]),
+  inventories_per_account: ENV.fetch("INVENTORIES_PER_ACCOUNT", PerformanceDatasetSeeder::DEFAULTS[:inventories_per_account]),
+  purchases_per_account: ENV.fetch("PURCHASES_PER_ACCOUNT", PerformanceDatasetSeeder::DEFAULTS[:purchases_per_account]),
+  deliveries_per_account: ENV.fetch("DELIVERIES_PER_ACCOUNT", PerformanceDatasetSeeder::DEFAULTS[:deliveries_per_account]),
+  items_batch_size: ENV.fetch("ITEMS_BATCH_SIZE", PerformanceDatasetSeeder::DEFAULTS[:items_batch_size])
+).call
